@@ -10,28 +10,46 @@ SerenityMind is an AI-powered mental health assistant designed to provide emotio
 - **Conversation Summary**: Get a summary of your chat for future reference.
 - **Mini Activities**: Engage in small activities designed to help with relaxation and mental clarity.
 
-## How It Works ⚙️
+How It Works ⚙️
+---------------
 
-1. **Install Dependencies**:
-   - Make sure Python and pip are installed.
-   - Install the required packages using `pip install -r requirements.txt`.
+### 🔧 Setup Instructions
 
-2. **Set Up Your API Key 🔑**:
-   - Create a `.env` file and add your **Google API Key** to it:
-     ```plaintext
-     GOOGLE_API_KEY=your_api_key_here
-     ```
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/Devansh-Gandhre/SerenityMind.git
+   cd SerenityMind
 
-3. **Run the Flask App**:
-   - Start the Flask app with:
-     ```bash
-     python app.py
-     ```
-   - The app will be available at `http://127.0.0.1:5000/`.
+2. **Install Dependencies**
 
-4. **Start Chatting**:
-   - Select a mood and start chatting with the AI.
-   - The AI will respond based on your selected mood and help with emotional support.
+   Ensure Python and pip are installed on your machine.
+
+   Install the required packages by running:
+   pip install -r requirements.txt
+
+3. **Set Up Your API Key**
+
+   Create a .env file in the project directory.
+
+   Add your Google API Key to the .env file:
+
+   GOOGLE_API_KEY=your_api_key_here
+
+4. **Run the Flask App**
+ 
+   Start the Flask app by running:
+   python app.py
+
+5. **Access the App**
+
+   Open your browser and go to the following URL to access the app:
+   http://127.0.0.1:5000/
+
+6.**Start Chatting**
+
+   Select your mood (e.g., Calm, Motivational, Friendly) from the dropdown and begin chatting with the AI. The AI will respond according to your selected mood.
+
+
 
 ## Project Structure 🗂️
 
