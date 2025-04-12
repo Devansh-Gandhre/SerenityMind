@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mood History - SerenityMind</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #e6f2ff, #ffffff);
+      color: #333;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #4a90e2;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      max-width: 500px;
+      margin: 20px auto;
+    }
+
+    li {
+      background-color: #ffffff;
+      margin-bottom: 10px;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .mood {
+      font-weight: bold;
+    }
+
+    .timestamp {
+      color: #777;
+      font-size: 0.9em;
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 12px 25px;
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #357acb;
+    }
+
+    .delete-btn {
+      background-color: #e24a4a;
+    }
+
+    .delete-btn:hover {
+      background-color: #c03939;
+    }
+  </style>
+</head>
+<body>
+  <h1>📅 Mood History</h1>
+  <ul id="moodList"></ul>
+
+  <div class="btn-container">
+    <button onclick="location.href='mood.html'">← Back to Mood Tracker</button>
+    <button class="delete-btn" onclick="clearMoodHistory()">🗑️ Clear Mood History</button>
+  </div>
+
+  <script>
+    const moodList = document.getElementById("moodList");
+    let storedMoods = JSON.parse(localStorage.getItem("moodHistory")) || [];
+
+    function renderMoods() {
+      moodList.innerHTML = "";
+
+      if (storedMoods.length === 0) {
+        moodList.innerHTML = "<p style='text-align:center;'>No moods recorded yet.</p>";
+      } else {
+        storedMoods.slice().reverse().forEach(entry => {
+          const li = document.createElement("li");
+          li.innerHTML = `
+            <span class="mood">${entry.mood}</span>
+            <span class="timestamp">${entry.date}</span>
+          `;
+          moodList.appendChild(li);
+        });
+      }
+    }
+
+    function clearMoodHistory() {
+      if (confirm("Are you sure you want to delete all mood history?")) {
+        localStorage.removeItem("moodHistory");
+        storedMoods = [];
+        renderMoods();
+      }
+    }
+
+    renderMoods();
+  </script>
+</body>
+</html>

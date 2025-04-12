@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat - SerenityMind</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.5s ease;
+    }
+
+    .navbar {
+      background-color: #4a90e2;
+      padding: 15px 20px;
+      color: white;
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .chat-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message {
+      max-width: 60%;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 15px;
+      line-height: 1.4;
+    }
+
+    .user-message {
+      align-self: flex-end;
+      background-color: #cce5ff;
+      text-align: right;
+    }
+
+    .ai-message {
+      align-self: flex-start;
+      background-color: #f0f8e2;
+      text-align: left;
+    }
+
+    .input-container {
+      display: flex;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border-top: 1px solid #ddd;
+    }
+
+    #userInput {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1em;
+    }
+
+    button {
+      padding: 12px 18px;
+      margin-left: 10px;
+      border: none;
+      background-color: #4a90e2;
+      color: white;
+      font-size: 1em;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #357acb;
+    }
+
+    .top-controls {
+      padding: 10px 20px;
+      background-color: #eef6ff;
+      display: flex;
+      gap: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    select {
+      padding: 10px;
+      font-size: 1em;
+      border-radius: 8px;
+      border: 2px solid #4a90e2;
+      background-color: #e7f0ff;
+    }
+
+    /* Mood-based themes */
+    body.calming { background: linear-gradient(to bottom right, #d4fcf9, #ffffff); }
+    body.motivational { background: linear-gradient(to bottom right, #fff4e6, #ffffff); }
+    body.friendly { background: linear-gradient(to bottom right, #fce4ec, #ffffff); }
+    body.professional { background: linear-gradient(to bottom right, #e6ecf0, #ffffff); }
+    body.casual { background: linear-gradient(to bottom right, #fffde7, #ffffff); }
+    body.sad { background: linear-gradient(to bottom right, #e0e7f1, #ffffff); }
+    body.lonely { background: linear-gradient(to bottom right, #f3e5f5, #ffffff); }
+    body.overwhelmed { background: linear-gradient(to bottom right, #ffe0b2, #ffffff); }
+    body.angry { background: linear-gradient(to bottom right, #ffcdd2, #ffffff); }
+    body.confused { background: linear-gradient(to bottom right, #f3f3e7, #ffffff); }
+    body.tired { background: linear-gradient(to bottom right, #d7ccc8, #ffffff); }
+    body.hopeful { background: linear-gradient(to bottom right, #e8f5e9, #ffffff); }
+    body.grateful { background: linear-gradient(to bottom right, #f0f4c3, #ffffff); }
+    body.determined { background: linear-gradient(to bottom right, #ffe082, #ffffff); }
+    body.burnedout { background: linear-gradient(to bottom right, #cfd8dc, #ffffff); }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <a href="index.html">🏠 SerenityMind</a>
+  </div>
+
+  <div class="top-controls">
+    <select id="modeSelect"></select>
+    <button onclick="summarizeChat()">Summarize</button>
+    <button onclick="deleteChat()">Delete Chat</button>
+  </div>
+
+  <div class="chat-container" id="chatContainer"></div>
+
+  <div class="input-container">
+    <input type="text" id="userInput" placeholder="Type your message..." onkeydown="handleKey(event)" />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <audio id="replySound" src="https://cdn.pixabay.com/audio/2023/03/30/audio_c3438c5f1f.mp3" preload="auto"></audio>
+
+  <script>
+    const sessionId = crypto.randomUUID();
+    let currentMode = null;
+    const modeSelect = document.getElementById("modeSelect");
+    const chatContainer = document.getElementById("chatContainer");
+    const sound = document.getElementById("replySound");
+
+    function applyMoodTheme(mood) {
+      document.body.className = mood;
+    }
+
+    function loadHistory() {
+      const saved = localStorage.getItem("serenity_chat_history");
+      if (saved) {
+        const { history, mode } = JSON.parse(saved);
+        currentMode = mode;
+        modeSelect.value = mode;
+        applyMoodTheme(mode);
+        history.forEach(msg => appendMessage(msg.text, msg.user));
+      } else {
+        appendMessage("🌟 Welcome! Before we begin, please select your mood from the dropdown above.");
+      }
+    }
+
+    function saveHistory() {
+      const messages = Array.from(document.querySelectorAll(".message")).map(el => ({
+        text: el.innerText,
+        user: el.classList.contains("user-message")
+      }));
+      localStorage.setItem("serenity_chat_history", JSON.stringify({ history: messages, mode: currentMode }));
+    }
+
+    function appendMessage(text, isUser = false) {
+      const msgDiv = document.createElement("div");
+      msgDiv.className = `message ${isUser ? "user-message" : "ai-message"}`;
+      msgDiv.innerText = text;
+      chatContainer.appendChild(msgDiv);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+      if (!isUser) sound.play();
+      saveHistory();
+    }
+
+    function handleKey(e) {
+      if (e.key === "Enter") sendMessage();
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const message = input.value.trim();
+      if (!message) return;
+
+      if (!currentMode) {
+        appendMessage("⚠️ Please select a mood before starting the conversation.");
+        return;
+      }
+
+      appendMessage(message, true);
+      input.value = "";
+
+      try {
+        const res = await fetch("http://127.0.0.1:5000/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ session_id: sessionId, message, mode: currentMode })
+        });
+        const data = await res.json();
+        appendMessage(data.reply || "[Error]");
+      } catch (err) {
+        appendMessage("[Error connecting to server]");
+        console.error(err);
+      }
+    }
+
+    async function summarizeChat() {
+      const res = await fetch("http://127.0.0.1:5000/summarize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ session_id: sessionId })
+      });
+      const data = await res.json();
+      appendMessage("📝 Summary:\n" + (data.summary || "No summary available."));
+    }
+
+    function deleteChat() {
+      localStorage.removeItem("serenity_chat_history");
+      location.reload();
+    }
+
+    // Load mood options dynamically
+    fetch("http://127.0.0.1:5000/modes")
+      .then(res => res.json())
+      .then(data => {
+        modeSelect.innerHTML = `<option value="" disabled selected>Select Mood</option>`;
+        data.modes.forEach(mode => {
+          const option = document.createElement("option");
+          option.value = mode;
+          option.textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
+          modeSelect.appendChild(option);
+        });
+
+        modeSelect.addEventListener("change", () => {
+          currentMode = modeSelect.value;
+          appendMessage(`🔄 Mood set to ${currentMode}.`);
+          applyMoodTheme(currentMode);
+          saveHistory();
+        });
+
+        loadHistory();
+      });
+  </script>
+</body>
+</html>

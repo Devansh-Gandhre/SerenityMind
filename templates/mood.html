@@ -1,0 +1,104 @@
+<!-- mood.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mood Tracker - SerenityMind</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #f0faff, #ffffff);
+      color: #333;
+      text-align: center;
+      padding: 30px;
+      margin: 0;
+    }
+
+    .navbar {
+      background-color: #4a90e2;
+      padding: 15px 25px;
+      text-align: left;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+
+    h1 {
+      color: #4a90e2;
+      font-size: 2.5em;
+      margin: 30px 0 20px;
+    }
+
+    .button-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 1em;
+      border: none;
+      border-radius: 10px;
+      background-color: #4a90e2;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #357acb;
+    }
+
+    .nav-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top navigation bar -->
+  <div class="navbar">
+    <a href="index.html">🏠 Home</a>
+  </div>
+
+  <h1>How are you feeling today? 😊</h1>
+
+  <div class="button-grid">
+    <button onclick="saveMood('Happy')">😊 Happy</button>
+    <button onclick="saveMood('Sad')">😢 Sad</button>
+    <button onclick="saveMood('Anxious')">😰 Anxious</button>
+    <button onclick="saveMood('Stressed')">😫 Stressed</button>
+    <button onclick="saveMood('Excited')">🤩 Excited</button>
+    <button onclick="saveMood('Calm')">😌 Calm</button>
+  </div>
+
+  <div class="nav-buttons">
+    <button onclick="location.href='mood-history.html'">📅 View Mood History</button>
+  </div>
+
+  <script>
+    function saveMood(mood) {
+      const moodHistory = JSON.parse(localStorage.getItem("moodHistory")) || [];
+      const newEntry = {
+        mood,
+        date: new Date().toLocaleString()
+      };
+      moodHistory.push(newEntry);
+      localStorage.setItem("moodHistory", JSON.stringify(moodHistory));
+      alert("Mood saved: " + mood);
+    }
+  </script>
+</body>
+</html>

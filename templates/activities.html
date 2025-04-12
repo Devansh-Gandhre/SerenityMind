@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mini Activities - SerenityMind</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #4a90e2;
+      padding: 15px 20px;
+      color: white;
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .content {
+      flex: 1;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .activity {
+      background: #f5fafd;
+      border: 2px solid #cce7f0;
+      padding: 20px;
+      margin: 15px;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .activity h3 {
+      margin-bottom: 10px;
+      color: #2e7d91;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background-color: #4a90e2;
+      color: white;
+      font-size: 1em;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #357acb;
+    }
+
+    .output {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <a href="index.html">🏠 SerenityMind</a>
+  </div>
+
+  <div class="content">
+    <h1>Mini Activities</h1>
+
+    <!-- Deep Breathing Activity -->
+    <div class="activity">
+      <h3>🌬️ Deep Breathing Exercise</h3>
+      <p>Follow the rhythm: Inhale... Hold... Exhale...</p>
+      <button onclick="startBreathing()">Start</button>
+      <div class="output" id="breathingOutput"></div>
+    </div>
+
+    <!-- Gratitude Prompt -->
+    <div class="activity">
+      <h3>🙏 Gratitude Prompt</h3>
+      <p>Click below to reflect on something you're thankful for.</p>
+      <button onclick="showGratitudePrompt()">Show Prompt</button>
+      <div class="output" id="gratitudeOutput"></div>
+    </div>
+
+    <!-- Affirmation Generator -->
+    <div class="activity">
+      <h3>💬 Positive Affirmation</h3>
+      <p>Need a little boost? Get a positive affirmation below.</p>
+      <button onclick="showAffirmation()">Get Affirmation</button>
+      <div class="output" id="affirmationOutput"></div>
+    </div>
+  </div>
+
+  <script>
+    const affirmations = [
+      "You are enough just as you are.",
+      "You are doing your best, and that is enough.",
+      "Every day is a fresh start.",
+      "You are worthy of love and peace.",
+      "You have overcome so much already.",
+      "You bring light to those around you.",
+      "You are capable and strong."
+    ];
+
+    const gratitudePrompts = [
+      "Name one person you are grateful for and why.",
+      "Recall a moment today that made you smile.",
+      "What’s something in your environment you're thankful for?",
+      "Think of a skill or talent you appreciate in yourself.",
+      "Name a simple joy you experienced this week."
+    ];
+
+    function showGratitudePrompt() {
+      const prompt = gratitudePrompts[Math.floor(Math.random() * gratitudePrompts.length)];
+      document.getElementById("gratitudeOutput").innerText = prompt;
+    }
+
+    function showAffirmation() {
+      const affirmation = affirmations[Math.floor(Math.random() * affirmations.length)];
+      document.getElementById("affirmationOutput").innerText = affirmation;
+    }
+
+    function startBreathing() {
+      const output = document.getElementById("breathingOutput");
+      const steps = ["Inhale deeply... 🌬️", "Hold your breath...", "Exhale slowly... 😌"];
+      let i = 0;
+      output.innerText = "Starting...";
+      const interval = setInterval(() => {
+        output.innerText = steps[i];
+        i++;
+        if (i === steps.length) {
+          clearInterval(interval);
+          setTimeout(() => output.innerText = "Done! Breathe again whenever you need.", 2000);
+        }
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

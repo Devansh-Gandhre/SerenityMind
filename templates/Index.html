@@ -1,0 +1,62 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SerenityMind</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #d9f0f6, #ffffff);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 3em;
+      margin-bottom: 0.2em;
+    }
+    p {
+      font-size: 1.2em;
+      margin-bottom: 2em;
+      color: #555;
+    }
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      width: 100%;
+      max-width: 300px;
+    }
+    button {
+      padding: 15px;
+      font-size: 1em;
+      border: none;
+      border-radius: 10px;
+      background-color: #79c2d0;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #5ba9b8;
+    }
+  </style>
+</head>
+<body>
+  <h1>SerenityMind</h1>
+  <p>Your calm companion for mental wellness 🌿</p>
+  <div class="button-container">
+    <button onclick="location.href='chat.html'">Talk to Serenity</button>
+    <button onclick="location.href='mood.html'">Mood Tracker</button>
+    <button onclick="location.href='activities.html'">Mini Activities</button>
+  </div>
+</body>
+</html>
