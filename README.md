@@ -22,32 +22,32 @@ How It Works ⚙️
 
 2. **Install Dependencies**
 
-Ensure Python and pip are installed on your machine.
+   Ensure Python and pip are installed on your machine.
 
-Install the required packages by running:
-pip install -r requirements.txt
+   Install the required packages by running:
+   pip install -r requirements.txt
 
 3. **Set Up Your API Key**
 
-Create a .env file in the project directory.
+   Create a .env file in the project directory.
 
-Add your Google API Key to the .env file:
+   Add your Google API Key to the .env file:
 
-GOOGLE_API_KEY=your_api_key_here
+   GOOGLE_API_KEY=your_api_key_here
 
 4. **Run the Flask App**
-
-Start the Flask app by running:
-python app.py
+ 
+   Start the Flask app by running:
+   python app.py
 
 5. **Access the App**
 
-Open your browser and go to the following URL to access the app:
-http://127.0.0.1:5000/
+   Open your browser and go to the following URL to access the app:
+   http://127.0.0.1:5000/
 
 6.**Start Chatting**
 
-Select your mood (e.g., Calm, Motivational, Friendly) from the dropdown and begin chatting with the AI. The AI will respond according to your selected mood.
+   Select your mood (e.g., Calm, Motivational, Friendly) from the dropdown and begin chatting with the AI. The AI will respond according to your selected mood.
 
 
 
