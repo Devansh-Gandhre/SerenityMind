@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 import google.generativeai as genai
 import os
@@ -42,6 +42,27 @@ def get_instruction(mode):
     return support_modes.get(mode, support_modes["friendly"])
 
 # --- Routes ---
+@app.route('/')
+def home():
+    return render_template('index.html')  # Render the home page (index.html)
+
+@app.route('/chat')
+def chat_page():
+    return render_template('chat.html')  # Render the chat page
+
+@app.route('/mood')
+def mood_page():
+    return render_template('mood.html')  # Render the mood tracker page
+
+@app.route('/mood-history')
+def mood_history():
+    return render_template('mood-history.html')
+
+
+@app.route('/activities')
+def activities_page():
+    return render_template('activities.html')  # Render the activities page
+
 @app.route('/chat', methods=['POST'])
 def chat():
     data = request.json
