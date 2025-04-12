@@ -79,4 +79,32 @@ Email: [devanshgandhre@gmail.com]
 GitHub: Devansh-Gandhre
 
 
+Contributing 🤝
+Contributions are welcome! If you'd like to contribute to the SerenityMind project, please follow these steps:
+
+Fork the Repository:
+
+Click on the fork button at the top of this page to create your own copy of the repository.
+
+Make Your Changes:
+
+Clone your forked repository and create a new branch for your changes.
+
+Make your changes and commit them with clear messages.
+
+Submit a Pull Request:
+
+Once you’re happy with your changes, submit a pull request to the main repository.
+
+Ensure your changes align with the overall project goals and add clear comments in the code if necessary.
+
+Credit & Attribution 🏅
+Original Creator: This project was created and is maintained by Devansh Gandhre.
+
+Contributors: All contributions are credited in the GitHub commit history and pull requests.
+
+Licensing: This project is open-source and available under the MIT License. Please ensure proper attribution when using or distributing the project.
+
+
+
 Let's create a peaceful and supportive environment together! 🌿
