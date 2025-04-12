@@ -67,7 +67,7 @@ How It Works ⚙️
     └── mood.html            # Page for selecting mood.
 
 
-**Technologies Used 💻**
+##Technologies Used 💻
 
 Flask: Web framework for creating the web application.
 
@@ -78,7 +78,7 @@ Python-dotenv: Manages environment variables for secure API key storage.
 HTML/CSS/JS: Frontend structure and interactivity.
 
 
-**Prompt Engineering 🎨**
+##Prompt Engineering 🎨
 
 The AI responses are dynamically tailored using mood-based prompt templates. Each mood (Calm, Motivational, Friendly, etc.) modifies the system instructions sent to the Gemini API, ensuring responses align with the user's emotional state.
 
@@ -90,17 +90,17 @@ Example Prompts:
 This ensures every interaction feels emotionally relevant and supportive to the user.
 
 
-**Contribution Guidelines 📝**
+##Contribution Guidelines 📝
 
 Feel free to fork the repository, make changes, and create a pull request! Contributions are always welcome.
 
 
-**License 📄**
+##License 📄
 
 This project is open-source and available under the MIT License.
 
 
-**Contact 💬**
+##Contact 💬
 
 For any questions or feedback, reach out to me at:
 
@@ -109,7 +109,7 @@ Email: [devanshgandhre@gmail.com]
 GitHub: Devansh-Gandhre
 
 
-**Future Improvements 🌱**
+##Future Improvements 🌱
 
 - Add mood-specific background music or sounds.
 - Integrate local storage for mood history tracking.
@@ -119,7 +119,8 @@ GitHub: Devansh-Gandhre
 
 
 
-**Contributing 🤝**
+## Contributing 🤝
+
 Contributions are welcome! If you'd like to contribute to the SerenityMind project, please follow these steps:
 
 Fork the Repository:
@@ -139,7 +140,8 @@ Once you’re happy with your changes, submit a pull request to the main reposit
 Ensure your changes align with the overall project goals and add clear comments in the code if necessary.
 
 
-**Credit & Attribution 🏅**
+##Credit & Attribution 🏅
+
 Original Creator: This project was created and is maintained by Devansh Gandhre.
 
 Contributors: All contributions are credited in the GitHub commit history and pull requests.
