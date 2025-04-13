@@ -9,6 +9,7 @@ SerenityMind is an AI-powered mental health assistant designed to provide emotio
 - **Emotion-Specific Responses**: The AI adjusts its tone based on your selected mood.
 - **Conversation Summary**: Get a summary of your chat for future reference.
 - **Mini Activities**: Engage in small activities designed to help with relaxation and mental clarity.
+- **Dark/light Mode**:Toggle between dark and light themes for a personalized and visually comfortable experience.
 
 How It Works ⚙️
 ---------------
