@@ -21,6 +21,9 @@
       color: white;
       font-size: 1.1em;
       font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .navbar a {
@@ -119,13 +122,68 @@
     body.grateful { background: linear-gradient(to bottom right, #f0f4c3, #ffffff); }
     body.determined { background: linear-gradient(to bottom right, #ffe082, #ffffff); }
     body.burnedout { background: linear-gradient(to bottom right, #cfd8dc, #ffffff); }
+
+    /* Light/Dark themes */
+    body.light-mode {
+      color: #222;
+    }
+
+    body.dark-mode {
+      color: #f0f0f0;
+      background: #121212;
+    }
+
+    body.dark-mode .navbar {
+      background-color: #222;
+      color: #f0f0f0;
+    }
+
+    body.dark-mode .navbar a {
+      color: #f0f0f0;
+    }
+
+    body.dark-mode .top-controls {
+      background-color: #1e1e1e;
+      border-color: #333;
+    }
+
+    body.dark-mode .input-container {
+      background-color: #1e1e1e;
+      border-color: #333;
+    }
+
+    body.dark-mode .user-message {
+      background-color: #2a72c8;
+      color: #fff;
+    }
+
+    body.dark-mode .ai-message {
+      background-color: #2e7d32;
+      color: #fff;
+    }
+
+    body.dark-mode select {
+      background-color: #333;
+      color: #f0f0f0;
+      border-color: #555;
+    }
+
+    body.dark-mode button {
+      background-color: #333;
+      color: #f0f0f0;
+    }
+
+    body.dark-mode button:hover {
+      background-color: #444;
+    }
+
   </style>
 </head>
 <body>
   <div class="navbar">
-    <a href="/">🏠 SerenityMind</a> <!-- Change to "/" route -->
+    <a href="/">🏠 SerenityMind</a>
+    <button onclick="toggleTheme()" style="background:none; border:none; color:white; font-size:1.2em; cursor:pointer;">🌙/☀️</button>
   </div>
-  
 
   <div class="top-controls">
     <select id="modeSelect"></select>
@@ -150,7 +208,7 @@
     const sound = document.getElementById("replySound");
 
     function applyMoodTheme(mood) {
-      document.body.className = mood;
+      document.body.className = mood + " " + (document.body.classList.contains("dark-mode") ? "dark-mode" : "light-mode");
     }
 
     function loadHistory() {
@@ -230,6 +288,19 @@
       location.reload();
     }
 
+    function toggleTheme() {
+      const isDark = document.body.classList.contains("dark-mode");
+      document.body.classList.remove(isDark ? "dark-mode" : "light-mode");
+      document.body.classList.add(isDark ? "light-mode" : "dark-mode");
+      localStorage.setItem("serenity_theme", isDark ? "light" : "dark");
+      applyMoodTheme(currentMode || "");
+    }
+
+    function applySavedTheme() {
+      const savedTheme = localStorage.getItem("serenity_theme") || "light";
+      document.body.classList.add(savedTheme + "-mode");
+    }
+
     // Load mood options dynamically
     fetch("http://127.0.0.1:5000/modes")
       .then(res => res.json())
@@ -249,6 +320,7 @@
           saveHistory();
         });
 
+        applySavedTheme();
         loadHistory();
       });
   </script>

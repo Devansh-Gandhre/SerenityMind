@@ -5,16 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mood History - SerenityMind</title>
   <style>
+    :root {
+      --bg-color: linear-gradient(to bottom right, #e6f2ff, #ffffff);
+      --text-color: #333;
+      --header-color: #4a90e2;
+      --button-bg: #4a90e2;
+      --button-hover: #357acb;
+      --delete-btn-bg: #e24a4a;
+      --delete-btn-hover: #c03939;
+      --list-bg: #ffffff;
+      --list-border: #ddd;
+      --timestamp-color: #777;
+    }
+
+    body.dark-mode {
+      --bg-color: #121212;
+      --text-color: #eee;
+      --header-color: #333;
+      --button-bg: #444;
+      --button-hover: #666;
+      --delete-btn-bg: #e24a4a;
+      --delete-btn-hover: #c03939;
+      --list-bg: #333;
+      --list-border: #555;
+      --timestamp-color: #bbb;
+    }
+
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom right, #e6f2ff, #ffffff);
-      color: #333;
+      background: var(--bg-color);
+      color: var(--text-color);
       padding: 20px;
+      transition: 0.3s;
     }
 
     h1 {
       text-align: center;
-      color: #4a90e2;
+      color: var(--header-color);
     }
 
     ul {
@@ -25,13 +52,14 @@
     }
 
     li {
-      background-color: #ffffff;
+      background-color: var(--list-bg);
       margin-bottom: 10px;
       padding: 15px;
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       display: flex;
       justify-content: space-between;
+      border: 1px solid var(--list-border);
     }
 
     .mood {
@@ -39,7 +67,7 @@
     }
 
     .timestamp {
-      color: #777;
+      color: var(--timestamp-color);
       font-size: 0.9em;
     }
 
@@ -53,7 +81,7 @@
 
     button {
       padding: 12px 25px;
-      background-color: #4a90e2;
+      background-color: var(--button-bg);
       color: white;
       border: none;
       border-radius: 8px;
@@ -63,19 +91,20 @@
     }
 
     button:hover {
-      background-color: #357acb;
+      background-color: var(--button-hover);
     }
 
     .delete-btn {
-      background-color: #e24a4a;
+      background-color: var(--delete-btn-bg);
     }
 
     .delete-btn:hover {
-      background-color: #c03939;
+      background-color: var(--delete-btn-hover);
     }
   </style>
 </head>
 <body>
+
   <h1>📅 Mood History</h1>
   <ul id="moodList"></ul>
 
@@ -83,6 +112,8 @@
     <button onclick="location.href='/mood'">← Back to Mood Tracker</button>
     <button class="delete-btn" onclick="clearMoodHistory()">🗑️ Clear Mood History</button>
   </div>
+
+  <button class="toggle-btn" onclick="toggleDarkMode()">🌙/☀️ Mode</button>
 
   <script>
     const moodList = document.getElementById("moodList");
@@ -113,7 +144,21 @@
       }
     }
 
-    renderMoods();
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      // Save mode in localStorage
+      const isDark = document.body.classList.contains('dark-mode');
+      localStorage.setItem("darkMode", isDark);
+    }
+
+    // Load saved mode on page load
+    window.onload = () => {
+      if (localStorage.getItem("darkMode") === "true") {
+        document.body.classList.add('dark-mode');
+      }
+      renderMoods();
+    }
   </script>
+
 </body>
 </html>
