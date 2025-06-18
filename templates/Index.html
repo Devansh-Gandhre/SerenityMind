@@ -1,29 +1,33 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SerenityMind</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-color: #d9f0f6;
-      --text-color: #333;
-      --button-bg: #79c2d0;
-      --button-hover: #5ba9b8;
-    }
+  --bg-gradient: linear-gradient(135deg, #b2f0c4, #a0d8e9);
+  --text-color: #224137;
+  --button-bg: #5f9ea0;
+  --button-hover: #518d8e;
+  --button-text: #ededed; /* Softer white */
+}
+
 
     body.dark-mode {
-      --bg-color: #1e1e1e;
-      --text-color: #f1f1f1;
+      --bg-gradient: linear-gradient(135deg, #1a1a1a, #333);
+      --text-color: #f9f9f9;
       --button-bg: #444;
       --button-hover: #666;
+      --button-text: #b6b8b6;
     }
 
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: var(--bg-color);
+      padding: 20px;
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg-gradient);
       color: var(--text-color);
       display: flex;
       flex-direction: column;
@@ -31,84 +35,176 @@
       justify-content: center;
       height: 100vh;
       text-align: center;
-      padding: 20px;
-      transition: 0.3s;
+      overflow: hidden;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    h1, p, .button-container {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.8s ease forwards;
     }
 
     h1 {
       font-size: 3em;
-      margin-bottom: 0.2em;
+      margin-bottom: 0.3em;
+      animation-delay: 0.2s;
     }
 
     p {
       font-size: 1.2em;
+      max-width: 500px;
       margin-bottom: 2em;
-      color: var(--text-color);
+      line-height: 1.5;
+      animation-delay: 0.4s;
     }
 
     .button-container {
       display: flex;
       flex-direction: column;
       gap: 15px;
+      animation-delay: 0.6s;
       width: 100%;
       max-width: 300px;
     }
 
-    button {
-      padding: 15px;
-      font-size: 1em;
-      border: none;
-      border-radius: 10px;
-      background-color: var(--button-bg);
-      color: white;
-      cursor: pointer;
-      transition: 0.3s;
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
+
+  button {
+  padding: 15px;
+  font-size: 1em;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  background-color: var(--button-bg);
+  color: var(--button-text); /* ← THIS is key */
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+
 
     button:hover {
       background-color: var(--button-hover);
+      transform: scale(1.03);
     }
 
     .toggle-btn {
       position: absolute;
       top: 20px;
       right: 20px;
-      padding: 10px 15px;
-      font-size: 0.9em;
-      border: none;
-      border-radius: 20px;
       background-color: var(--button-bg);
-      color: white;
+      color: var(--button-text);
+      padding: 8px 12px;
+      border-radius: 20px;
       cursor: pointer;
+      font-size: 0.9em;
+      z-index: 10;
+    }
+
+    .leaves-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .leaf {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      animation: fall linear;
+      opacity: 0;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(120vh) rotate(360deg);
+        opacity: 0;
+      }
     }
   </style>
 </head>
 <body>
-  <button class="toggle-btn" onclick="toggleMode()">🌙/☀️ Mode</button>
+  <div class="leaves-container" id="leaves"></div>
+
+  <button class="toggle-btn" onclick="toggleMode()">🌙 / ☀️</button>
 
   <h1>SerenityMind</h1>
   <p>Your calm companion for mental wellness 🌿</p>
-  
+
   <div class="button-container">
-    <button onclick="location.href='/chat'">Talk to Serenity</button>
-    <button onclick="location.href='/mood'">Mood Tracker</button>
-    <button onclick="location.href='/activities'">Mini Activities</button>
+    <button onclick="location.href='/chat'">💬 Talk to Serenity</button>
+    <button onclick="location.href='/mood'">📊 Mood Tracker</button>
+    <button onclick="location.href='/activities'">🎯 Mini Activities</button>
   </div>
 
   <script>
-    // Check saved mode on load
     if (localStorage.getItem("theme") === "dark") {
       document.body.classList.add("dark-mode");
     }
 
     function toggleMode() {
       document.body.classList.toggle("dark-mode");
-      if (document.body.classList.contains("dark-mode")) {
-        localStorage.setItem("theme", "dark");
-      } else {
-        localStorage.setItem("theme", "light");
-      }
+      localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
     }
+
+    const leafImages = [
+      "https://cdn-icons-png.flaticon.com/128/188/188333.png",
+      "https://cdn-icons-png.flaticon.com/128/8524/8524294.png",
+      "https://cdn-icons-png.flaticon.com/128/16148/16148353.png",
+      "https://cdn-icons-png.flaticon.com/128/2917/2917995.png",
+      "https://cdn-icons-png.flaticon.com/128/2831/2831965.png",
+      "https://cdn-icons-png.flaticon.com/128/4977/4977163.png",
+      "https://cdn-icons-png.flaticon.com/128/1147/1147560.png"
+    ];
+
+    const container = document.getElementById("leaves");
+
+    function createLeaf() {
+      const leaf = document.createElement("img");
+      leaf.src = leafImages[Math.floor(Math.random() * leafImages.length)];
+      leaf.className = "leaf";
+
+      const size = Math.random() * 0.5 + 0.5;
+      const duration = 10 + Math.random() * 10;
+      const delay = Math.random() * 3;
+
+      leaf.style.width = `${40 * size}px`;
+      leaf.style.height = `${40 * size}px`;
+      leaf.style.left = `${Math.random() * 100}%`;
+      leaf.style.animationDuration = `${duration}s`;
+      leaf.style.animationDelay = `${delay}s`;
+
+      container.appendChild(leaf);
+
+      setTimeout(() => {
+        container.removeChild(leaf);
+      }, (duration + delay) * 1000);
+    }
+
+    for (let i = 0; i < 25; i++) {
+      createLeaf();
+    }
+
+    setInterval(createLeaf, 400);
   </script>
 </body>
 </html>

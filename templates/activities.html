@@ -36,6 +36,13 @@
       flex-direction: column;
       min-height: 100vh;
       transition: 0.3s;
+      font-size: 16px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        font-size: 14px;
+      }
     }
 
     .navbar {
@@ -119,41 +126,58 @@
       font-weight: bold;
     }
 
+    .feedback {
+      margin-top: 10px;
+      font-size: 1.2em;
+    }
+
+    .back-button {
+      margin-bottom: 30px;
+    }
   </style>
 </head>
 <body>
 
   <div class="navbar">
     <a href="/">🏠 SerenityMind</a>
-    <button class="toggle-btn" onclick="toggleDarkMode()">🌙/☀️ Mode</button>
+    <button class="toggle-btn" onclick="toggleDarkMode()" aria-label="Toggle Light or Dark Mode">🌙/☀️ Mode</button>
   </div>
 
   <div class="content">
+
+    <a href="/" class="back-button">
+      <button aria-label="Back to Home">⬅ Back to Home</button>
+    </a>
+
     <h1>Mini Activities</h1>
 
     <!-- Deep Breathing Activity -->
     <div class="activity">
       <h3>🌬️ Deep Breathing Exercise</h3>
       <p>Follow the rhythm: Inhale... Hold... Exhale...</p>
-      <button onclick="startBreathing()">Start</button>
+      <button onclick="startBreathing()" aria-label="Start Deep Breathing Exercise">Start</button>
       <div class="output" id="breathingOutput"></div>
+      <div class="feedback">How do you feel? 😊 😐 😞</div>
     </div>
 
     <!-- Gratitude Prompt -->
     <div class="activity">
       <h3>🙏 Gratitude Prompt</h3>
       <p>Click below to reflect on something you're thankful for.</p>
-      <button onclick="showGratitudePrompt()">Show Prompt</button>
+      <button onclick="showGratitudePrompt()" aria-label="Show Gratitude Prompt">Show Prompt</button>
       <div class="output" id="gratitudeOutput"></div>
+      <div class="feedback">How do you feel? 😊 😐 😞</div>
     </div>
 
     <!-- Affirmation Generator -->
     <div class="activity">
       <h3>💬 Positive Affirmation</h3>
       <p>Need a little boost? Get a positive affirmation below.</p>
-      <button onclick="showAffirmation()">Get Affirmation</button>
+      <button onclick="showAffirmation()" aria-label="Get Positive Affirmation">Get Affirmation</button>
       <div class="output" id="affirmationOutput"></div>
+      <div class="feedback">How do you feel? 😊 😐 😞</div>
     </div>
+
   </div>
 
   <script>
@@ -188,12 +212,16 @@
     function startBreathing() {
       const output = document.getElementById("breathingOutput");
       const steps = ["Inhale deeply... 🌬️", "Hold your breath...", "Exhale slowly... 😌"];
+      let cycle = 0;
       let i = 0;
       output.innerText = "Starting...";
+
       const interval = setInterval(() => {
         output.innerText = steps[i];
-        i++;
-        if (i === steps.length) {
+        i = (i + 1) % steps.length;
+        if (i === 0) cycle++;
+
+        if (cycle === 3) { // 3 full breath cycles
           clearInterval(interval);
           setTimeout(() => output.innerText = "Done! Breathe again whenever you need.", 2000);
         }
@@ -202,17 +230,14 @@
 
     function toggleDarkMode() {
       document.body.classList.toggle('dark-mode');
-      // Save mode in localStorage
-      const isDark = document.body.classList.contains('dark-mode');
-      localStorage.setItem("darkMode", isDark);
+      localStorage.setItem("darkMode", document.body.classList.contains('dark-mode'));
     }
 
-    // Load saved mode on page load
     window.onload = () => {
       if (localStorage.getItem("darkMode") === "true") {
         document.body.classList.add('dark-mode');
       }
-    }
+    };
   </script>
 
 </body>
