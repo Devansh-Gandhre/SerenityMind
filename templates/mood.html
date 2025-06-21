@@ -6,45 +6,67 @@
   <title>Mood Tracker - SerenityMind</title>
   <style>
     :root {
-      --bg-color: #f0faff;
-      --text-color: #333;
-      --navbar-color: #4a90e2;
-      --button-bg: #4a90e2;
-      --button-hover: #357acb;
+      --bg-gradient: linear-gradient(to bottom, #b2f0c4, #a0d8e9);
+      --text-color: #224137;
+      --navbar-color: #5f9ea0;
+      --button-bg: #5f9ea0;
+      --button-hover: #518d8e;
+      --box-bg: #a0d8e9cc;
     }
 
     body.dark-mode {
-      --bg-color: #1e1e1e;
+      --bg-gradient: linear-gradient(to bottom, #1e1e1e, #2a2a2a);
       --text-color: #eee;
       --navbar-color: #333;
       --button-bg: #444;
       --button-hover: #666;
+      --box-bg: #2a2a2a;
     }
 
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: var(--bg-color);
+      background: var(--bg-gradient);
       color: var(--text-color);
-      text-align: center;
-      padding: 30px;
       margin: 0;
       transition: 0.3s;
+      min-height: 100vh;
     }
 
     .navbar {
       background-color: var(--navbar-color);
       padding: 15px 25px;
-      text-align: left;
       display: flex;
-      justify-content: space-between;
       align-items: center;
     }
 
-    .navbar a {
+    .navbar-left,
+    .navbar-center,
+    .navbar-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .navbar-left {
+      justify-content: flex-start;
+    }
+
+    .navbar-right {
+      justify-content: flex-end;
+    }
+
+    .navbar-left a {
       color: white;
       text-decoration: none;
       font-weight: bold;
       font-size: 1.1em;
+    }
+
+    .navbar-center {
+      color: white;
+      font-weight: bold;
+      font-size: 1.3em;
     }
 
     .toggle-btn {
@@ -64,8 +86,16 @@
 
     h1 {
       color: var(--navbar-color);
-      font-size: 2.5em;
+      font-size: 2.2em;
+      text-align: center;
       margin: 30px 0 20px;
+    }
+
+    .section-title {
+      font-size: 1.4em;
+      margin: 25px 0 10px;
+      text-align: center;
+      font-weight: bold;
     }
 
     .button-grid {
@@ -73,7 +103,7 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 15px;
-      margin-bottom: 30px;
+      padding: 0 10px;
     }
 
     button {
@@ -93,62 +123,326 @@
 
     .nav-buttons {
       display: flex;
-      flex-wrap: wrap;
       justify-content: center;
       gap: 15px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    #history-container {
       margin-top: 20px;
+      display: none;
+    }
+
+    #mood-box {
+      background-color: var(--box-bg);
+      border-radius: 15px;
+      padding: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .mood-entry {
+      margin: 8px 0;
+      font-size: 1.1em;
+    }
+
+    .reset-btn {
+      margin-top: 15px;
+    }
+
+    .popup {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--navbar-color);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      font-size: 1em;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      z-index: 99;
+    }
+
+    .popup.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #mood-heading {
+      text-align: center;
+      font-size: 1.5em;
+      margin: 30px 0 20px;
+      color: var(--text-color);
+      font-weight: 700;
+    }
+
+    .cursor {
+      display: inline-block;
+      color: var(--text-color);
+      animation: blink 1s infinite;
+      font-weight: bold;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    @media (max-width: 500px) {
+      .navbar-center {
+        font-size: 1.1em;
+      }
+
+      .button-grid button,
+      .nav-buttons button {
+        padding: 12px 18px;
+        font-size: 0.9em;
+      }
+
+      #mood-heading {
+        text-align: center;
+        font-size: 1.5em;
+        margin: 30px auto 20px;
+        color: var(--text-color);
+        font-weight: 700;
+        max-width: 750px;
+        padding: 20px;
+        border-radius: 20px;
+        background-color: rgba(139, 195, 74, 0.15);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .section-title {
+        font-size: 1.2em;
+      }
+    }
+
+    .wave-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 160px;
+      overflow: hidden;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .wave {
+      position: absolute;
+      width: 400%;
+      height: 100%;
+      animation: waveMove 18s linear infinite;
+      opacity: 0.5;
+    }
+
+    .wave:nth-child(1) path { fill: #3e8f79; animation-delay: 0s; }
+    .wave:nth-child(2) path { fill: #32786a; animation-delay: -6s; opacity: 0.4; }
+    .wave:nth-child(3) path { fill: #2a6559; animation-delay: -12s; opacity: 0.35; }
+
+    @keyframes waveMove {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .bubbles {
+      position: fixed;
+      width: 100%;
+      height: 200px;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .bubbles span {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    }
+
+    .bubbles span::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: inherit;
+      transform: scale(1.5);
+      filter: blur(3px);
+    }
+
+    @keyframes bubbleFloatUp {
+      0% { transform: translateY(0) scale(1); opacity: 0; }
+      30% { opacity: 0.8; }
+      100% { transform: translateY(-220px) scale(1.3); opacity: 0; }
+    }
+
+    @keyframes bubbleFloatDown {
+      0% { transform: translateY(0) scale(1); opacity: 0; }
+      30% { opacity: 0.8; }
+      100% { transform: translateY(220px) scale(1.3); opacity: 0; }
     }
   </style>
 </head>
 <body>
-
-  <!-- Top navigation bar -->
+  <!-- Navbar, Moods, Buttons -->
   <div class="navbar">
-    <a href="/">🏠 SerenityMind</a>
-    <button class="toggle-btn" onclick="toggleDarkMode()">🌙/☀️ Mode</button>
+    <div class="navbar-left"><a href="/">🏠 Home</a></div>
+    <div class="navbar-center">🌿 SerenityMind</div>
+    <div class="navbar-right"><button class="toggle-btn" onclick="toggleDarkMode()">🌙/☀️ Mode</button></div>
   </div>
 
-  <h1>How are you feeling today? 😊</h1>
+  <h1 id="mood-heading"><span id="typed-text"></span><span class="cursor">|</span></h1>
 
+  <div class="section-title">Positive Moods 😊</div>
   <div class="button-grid">
-    <button onclick="saveMood('Happy')">😊 Happy</button>
-    <button onclick="saveMood('Sad')">😢 Sad</button>
-    <button onclick="saveMood('Anxious')">😰 Anxious</button>
-    <button onclick="saveMood('Stressed')">😫 Stressed</button>
-    <button onclick="saveMood('Excited')">🤩 Excited</button>
-    <button onclick="saveMood('Calm')">😌 Calm</button>
+    <button onclick="saveMood('😊 Happy')">😊 Happy</button>
+    <button onclick="saveMood('🤩 Excited')">🤩 Excited</button>
+    <button onclick="saveMood('😌 Calm')">😌 Calm</button>
+    <button onclick="saveMood('😎 Confident')">😎 Confident</button>
+    <button onclick="saveMood('🥰 Loved')">🥰 Loved</button>
+  </div>
+
+  <div class="section-title">Challenging Emotions 💭</div>
+  <div class="button-grid">
+    <button onclick="saveMood('😢 Sad')">😢 Sad</button>
+    <button onclick="saveMood('😰 Anxious')">😰 Anxious</button>
+    <button onclick="saveMood('😫 Stressed')">😫 Stressed</button>
+    <button onclick="saveMood('😠 Angry')">😠 Angry</button>
+    <button onclick="saveMood('😴 Tired')">😴 Tired</button>
+    <button onclick="saveMood('😭 Heartbroken')">😭 Heartbroken</button>
+    <button onclick="saveMood('😐 Meh')">😐 Meh</button>
   </div>
 
   <div class="nav-buttons">
-    <button onclick="location.href='/mood-history'">📅 View Mood History</button>
+    <button onclick="toggleMoodHistory()">📅 View Mood History</button>
+    <button class="reset-btn" onclick="resetMoodHistory()" id="resetBtn" style="display:none;">🔄 Reset</button>
   </div>
 
+  <div id="history-container">
+    <h2 style="text-align: center;">Mood History</h2>
+    <div id="mood-box"><div id="mood-history"></div></div>
+  </div>
+
+  <!-- WAVES + BUBBLES -->
+  <div class="wave-container">
+    <svg class="wave" viewBox="0 0 240 28" preserveAspectRatio="none">
+      <path d="M0 20 Q 30 10 60 20 T 120 20 T 180 20 T 240 20 V 28 H 0 Z"></path>
+    </svg>
+    <svg class="wave" viewBox="0 0 240 28" preserveAspectRatio="none">
+      <path d="M0 18 Q 30 25 60 18 T 120 18 T 180 18 T 240 18 V 28 H 0 Z"></path>
+    </svg>
+    <svg class="wave" viewBox="0 0 240 28" preserveAspectRatio="none">
+      <path d="M0 22 Q 30 15 60 22 T 120 22 T 180 22 T 240 22 V 28 H 0 Z"></path>
+    </svg>
+    <div class="bubbles bottom"></div>
+    <div class="bubbles top"></div>
+  </div>
+
+  <div id="popup" class="popup"></div>
+
   <script>
+    let isHistoryVisible = false;
+    const supportiveMoods = ['😢 Sad', '😰 Anxious', '😫 Stressed', '😠 Angry', '😭 Heartbroken', '😴 Tired'];
+
+    function showPopup(message) {
+      const popup = document.getElementById("popup");
+      popup.innerText = message;
+      popup.classList.add("show");
+      setTimeout(() => popup.classList.remove("show"), 3500);
+    }
+
     function saveMood(mood) {
       const moodHistory = JSON.parse(localStorage.getItem("moodHistory")) || [];
-      const newEntry = {
-        mood,
-        date: new Date().toLocaleString()
-      };
+      const newEntry = { mood, date: new Date().toLocaleString() };
       moodHistory.push(newEntry);
       localStorage.setItem("moodHistory", JSON.stringify(moodHistory));
-      alert("Mood saved: " + mood);
+      if (isHistoryVisible) displayMoodHistory();
+      if (supportiveMoods.includes(mood)) {
+        showPopup(`Feeling ${mood}? 💬 You can always Talk to Serenity!`);
+      } else {
+        showPopup(`Mood saved: ${mood}`);
+      }
+    }
+
+    function displayMoodHistory() {
+      const data = JSON.parse(localStorage.getItem("moodHistory")) || [];
+      document.getElementById("mood-history").innerHTML = data.map(entry =>
+        `<div class="mood-entry">${entry.date} - ${entry.mood}</div>`
+      ).join("");
+      document.getElementById("history-container").style.display = "block";
+      document.getElementById("resetBtn").style.display = "inline-block";
+    }
+
+    function toggleMoodHistory() {
+      isHistoryVisible = !isHistoryVisible;
+      if (isHistoryVisible) displayMoodHistory();
+      else {
+        document.getElementById("history-container").style.display = "none";
+        document.getElementById("resetBtn").style.display = "none";
+      }
+    }
+
+    function resetMoodHistory() {
+      localStorage.removeItem("moodHistory");
+      document.getElementById("mood-history").innerHTML = "";
+      document.getElementById("history-container").style.display = "none";
+      document.getElementById("resetBtn").style.display = "none";
+      isHistoryVisible = false;
+      showPopup("Mood history reset!");
     }
 
     function toggleDarkMode() {
       document.body.classList.toggle('dark-mode');
-      // Save mode in localStorage
-      const isDark = document.body.classList.contains('dark-mode');
-      localStorage.setItem("darkMode", isDark);
+      localStorage.setItem("darkMode", document.body.classList.contains('dark-mode'));
     }
 
-    // Load saved mode on page load
+    const text = "💚 Your feelings matter. Let SerenityMind know how you're doing today.";
+    const typedTextSpan = document.getElementById("typed-text");
+    let charIndex = 0;
+    function type() {
+      if (charIndex < text.length) {
+        typedTextSpan.textContent += text.charAt(charIndex);
+        charIndex++;
+        setTimeout(type, 45);
+      }
+    }
+
     window.onload = () => {
       if (localStorage.getItem("darkMode") === "true") {
         document.body.classList.add('dark-mode');
       }
-    }
-  </script>
+      type();
 
+      const bubbleCount = 30;
+      const topContainer = document.querySelector(".bubbles.top");
+      const bottomContainer = document.querySelector(".bubbles.bottom");
+
+      function createBubble(container, direction) {
+        const span = document.createElement("span");
+        const size = Math.random() * 12 + 6;
+        const left = Math.random() * 100;
+        const delay = Math.random() * -6;
+        const duration = Math.random() * 5 + 6;
+        span.style.width = span.style.height = `${size}px`;
+        span.style.left = `${left}%`;
+        span.style.animation = `${direction === 'up' ? 'bubbleFloatUp' : 'bubbleFloatDown'} ${duration}s linear infinite`;
+        span.style.animationDelay = `${delay}s`;
+        container.appendChild(span);
+      }
+
+      for (let i = 0; i < bubbleCount; i++) {
+        createBubble(topContainer, 'down');
+        createBubble(bottomContainer, 'up');
+      }
+    };
+  </script>
 </body>
 </html>
